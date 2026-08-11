@@ -3,6 +3,7 @@ const express = require("express");
 const {
   getAllItems,
   createNewItem,
+  updateExistingItem,
 } = require("../controllers/item.controller");
 
 const {
@@ -15,6 +16,7 @@ const {
 
 const {
   createItemSchema,
+  updateItemSchema,
 } = require("../schemas/item.schema");
 
 const router = express.Router();
@@ -30,6 +32,13 @@ router.post(
   authenticate,
   validateBody(createItemSchema),
   createNewItem
+);
+
+router.put(
+  "/:id",
+  authenticate,
+  validateBody(updateItemSchema),
+  updateExistingItem
 );
 
 module.exports = router;

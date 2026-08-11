@@ -1,6 +1,7 @@
 const {
   getItems,
   createItemForUser,
+  updateItemForUser,
 } = require("../services/item.service");
 
 const getAllItems = async (req, res, next) => {
@@ -23,7 +24,11 @@ const getAllItems = async (req, res, next) => {
   }
 };
 
-const createNewItem = async (req, res, next) => {
+const createNewItem = async (
+  req,
+  res,
+  next
+) => {
   try {
     const item = await createItemForUser({
       userId: req.user.id,
@@ -42,7 +47,32 @@ const createNewItem = async (req, res, next) => {
   }
 };
 
+const updateExistingItem = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const item = await updateItemForUser({
+      userId: req.user.id,
+      itemId: req.params.id,
+      itemData: req.body,
+    });
+
+    return res.status(200).json({
+      ok: true,
+      message: "Tarea actualizada correctamente",
+      data: {
+        item,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllItems,
   createNewItem,
+  updateExistingItem,
 };

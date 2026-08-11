@@ -32,7 +32,10 @@ const getItems = async ({ userId, search }) => {
   }
 
   return userItems.filter((item) => {
-    const title = String(item.title || "").toLowerCase();
+    const title = String(
+      item.title || ""
+    ).toLowerCase();
+
     const description = String(
       item.description || ""
     ).toLowerCase();
@@ -62,7 +65,43 @@ const createItemForUser = async ({
   return newItem;
 };
 
+const updateItemForUser = async ({
+  userId,
+  itemId,
+  itemData,
+}) => {
+  const items = await readJsonFile(ITEMS_FILE);
+
+  const itemIndex = items.findIndex(
+    (item) =>
+      item.id === itemId &&
+      item.createdBy === userId
+  );
+
+  if (itemIndex === -1) {
+    const error = new Error(
+      "Tarea no encontrada"
+    );
+
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const updatedItem = {
+    ...items[itemIndex],
+    ...itemData,
+    updatedAt: new Date().toISOString(),
+  };
+
+  items[itemIndex] = updatedItem;
+
+  await writeJsonFile(ITEMS_FILE, items);
+
+  return updatedItem;
+};
+
 module.exports = {
   getItems,
   createItemForUser,
+  updateItemForUser,
 };
