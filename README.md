@@ -6,7 +6,7 @@ Este proyecto corresponde al Trabajo Práctico Integrador de Backend. Permite re
 
 ## Estado del proyecto
 
-El backend funciona localmente y cuenta con:
+El backend funciona localmente y está desplegado en producción mediante Render. Cuenta con:
 
 - Registro seguro de usuarios.
 - Contraseñas almacenadas mediante hash.
@@ -18,7 +18,7 @@ El backend funciona localmente y cuenta con:
 - Búsquedas sin distinguir mayúsculas y minúsculas.
 - Persistencia académica mediante archivos JSON.
 - Colección de pruebas para Postman.
-- Despliegue en Render pendiente de configuración.
+- Despliegue en Render completado y verificado.
 
 ## Tecnologías utilizadas
 
@@ -470,19 +470,25 @@ En un sistema empresarial real se recomienda utilizar una base de datos y mecani
 
 ## Despliegue
 
-El proyecto está preparado para ejecutarse mediante:
+La API está desplegada y funcionando públicamente en Render.
 
-```powershell
-npm start
+- URL pública: [API Gestor de Tareas en Render](https://tp-integrador-api-tareas.onrender.com)
+- Ruta de verificación: [comprobar estado de la API](https://tp-integrador-api-tareas.onrender.com/health)
+- Rama desplegada: `main`
+- Comando de construcción: `npm ci`
+- Comando de inicio: `npm start`
+- Health Check Path: `/health`
+
+Render utiliza la variable de entorno privada `JWT_SECRET`. Su valor no está publicado en GitHub.
+
+La respuesta esperada al consultar la ruta de verificación es:
+
+```json
+{
+  "ok": true,
+  "message": "API Gestor de Tareas funcionando correctamente"
+}
 ```
-
-Plataforma prevista:
-
-```text
-Render
-```
-
-La URL pública será incorporada en este documento después del despliegue.
 
 ## Repositorio
 
