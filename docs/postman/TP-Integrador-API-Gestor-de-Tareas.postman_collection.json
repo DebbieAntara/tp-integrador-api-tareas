@@ -36,7 +36,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"name\": \"Usuario Demo\",\r\n  \"email\": \"demo@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
+          "raw": "{\r\n  \"name\": \"Debbie Demo Render\",\r\n  \"email\": \"debbie.render@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -146,7 +146,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"email\": \"demo@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
+          "raw": "{\r\n  \"email\": \"debbie.render@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -245,6 +245,29 @@
     },
     {
       "name": "08 - Crear tarea",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "if (\r",
+              "  pm.response.code === 201 &&\r",
+              "  response.data?.item?.id\r",
+              ") {\r",
+              "  pm.collectionVariables.set(\r",
+              "    \"itemId\",\r",
+              "    response.data.item.id\r",
+              "  );\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "bearer",
@@ -260,7 +283,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"title\": \"Tarea para eliminar\",\r\n  \"description\": \"Registro creado para probar DELETE\",\r\n  \"status\": \"pendiente\",\r\n  \"priority\": \"media\",\r\n  \"dueDate\": \"2026-08-30\"\r\n}",
+          "raw": "{\r\n  \"title\": \"Tarea para probar actualización y eliminación\",\r\n  \"description\": \"Registro temporal para verificar PUT y DELETE\",\r\n  \"status\": \"pendiente\",\r\n  \"priority\": \"media\",\r\n  \"dueDate\": \"2026-08-30\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -295,7 +318,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/items?search=INFORME",
+          "raw": "{{baseUrl}}/items?search=PREPARAR",
           "host": [
             "{{baseUrl}}"
           ],
@@ -305,7 +328,7 @@
           "query": [
             {
               "key": "search",
-              "value": "INFORME"
+              "value": "PREPARAR"
             }
           ]
         }
@@ -365,7 +388,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"description\": \"Informe en preparación y revisión\",\r\n  \"status\": \"en_progreso\",\r\n  \"priority\": \"media\"\r\n}",
+          "raw": "{\r\n  \"description\": \"Presentación revisada y lista para exposición\",\r\n  \"status\": \"en_progreso\",\r\n  \"priority\": \"media\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -373,13 +396,13 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "raw": "{{baseUrl}}/items/{{itemId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "items",
-            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+            "{{itemId}}"
           ]
         }
       },
@@ -402,7 +425,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{}\r\n",
+          "raw": "{}",
           "options": {
             "raw": {
               "language": "json"
@@ -410,13 +433,13 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "raw": "{{baseUrl}}/items/{{itemId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "items",
-            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+            "{{itemId}}"
           ]
         }
       },
@@ -477,13 +500,13 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "raw": "{{baseUrl}}/items/{{itemId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "items",
-            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+            "{{itemId}}"
           ]
         }
       },
@@ -505,13 +528,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/items/7321f275-c152-4fd6-930d-3a1690308943",
+          "raw": "{{baseUrl}}/items/{{itemId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "items",
-            "7321f275-c152-4fd6-930d-3a1690308943"
+            "{{itemId}}"
           ]
         }
       },
@@ -554,13 +577,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/items/7321f275-c152-4fd6-930d-3a1690308943",
+          "raw": "{{baseUrl}}/items/{{itemId}}",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "items",
-            "7321f275-c152-4fd6-930d-3a1690308943"
+            "{{itemId}}"
           ]
         }
       },
@@ -599,6 +622,10 @@
     {
       "key": "token",
       "secret": true
+    },
+    {
+      "key": "itemId",
+      "value": ""
     }
   ]
 }
