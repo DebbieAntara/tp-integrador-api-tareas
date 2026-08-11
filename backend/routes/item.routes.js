@@ -4,6 +4,7 @@ const {
   getAllItems,
   createNewItem,
   updateExistingItem,
+  deleteExistingItem,
 } = require("../controllers/item.controller");
 
 const {
@@ -39,6 +40,12 @@ router.put(
   authenticate,
   validateBody(updateItemSchema),
   updateExistingItem
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  deleteExistingItem
 );
 
 module.exports = router;

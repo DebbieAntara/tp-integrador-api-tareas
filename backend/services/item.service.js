@@ -16,6 +16,16 @@ const ITEMS_FILE = path.join(
   "items.json"
 );
 
+const createNotFoundError = () => {
+  const error = new Error(
+    "Tarea no encontrada"
+  );
+
+  error.statusCode = 404;
+
+  return error;
+};
+
 const getItems = async ({ userId, search }) => {
   const items = await readJsonFile(ITEMS_FILE);
 
@@ -79,12 +89,7 @@ const updateItemForUser = async ({
   );
 
   if (itemIndex === -1) {
-    const error = new Error(
-      "Tarea no encontrada"
-    );
-
-    error.statusCode = 404;
-    throw error;
+    throw createNotFoundError();
   }
 
   const updatedItem = {
@@ -100,8 +105,35 @@ const updateItemForUser = async ({
   return updatedItem;
 };
 
+const deleteItemForUser = async ({
+  userId,
+  itemId,
+}) => {
+  const items = await readJsonFile(ITEMS_FILE);
+
+  const itemIndex = items.findIndex(
+    (item) =>
+      item.id === itemId &&
+      item.createdBy === userId
+  );
+
+  if (itemIndex === -1) {
+    throw createNotFoundError();
+  }
+
+  const [deletedItem] = items.splice(
+    itemIndex,
+    1
+  );
+
+  await writeJsonFile(ITEMS_FILE, items);
+
+  return deletedItem;
+};
+
 module.exports = {
   getItems,
   createItemForUser,
   updateItemForUser,
+  deleteItemForUser,
 };

@@ -2,6 +2,7 @@ const {
   getItems,
   createItemForUser,
   updateItemForUser,
+  deleteItemForUser,
 } = require("../services/item.service");
 
 const getAllItems = async (req, res, next) => {
@@ -71,8 +72,32 @@ const updateExistingItem = async (
   }
 };
 
+const deleteExistingItem = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const item = await deleteItemForUser({
+      userId: req.user.id,
+      itemId: req.params.id,
+    });
+
+    return res.status(200).json({
+      ok: true,
+      message: "Tarea eliminada correctamente",
+      data: {
+        item,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllItems,
   createNewItem,
   updateExistingItem,
+  deleteExistingItem,
 };
