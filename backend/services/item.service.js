@@ -2,7 +2,12 @@ const path = require("node:path");
 
 const {
   readJsonFile,
+  writeJsonFile,
 } = require("../utils/json-file.util");
+
+const {
+  createItem,
+} = require("../models/item.model");
 
 const ITEMS_FILE = path.join(
   __dirname,
@@ -39,6 +44,25 @@ const getItems = async ({ userId, search }) => {
   });
 };
 
+const createItemForUser = async ({
+  userId,
+  itemData,
+}) => {
+  const items = await readJsonFile(ITEMS_FILE);
+
+  const newItem = createItem({
+    ...itemData,
+    createdBy: userId,
+  });
+
+  items.push(newItem);
+
+  await writeJsonFile(ITEMS_FILE, items);
+
+  return newItem;
+};
+
 module.exports = {
   getItems,
+  createItemForUser,
 };
