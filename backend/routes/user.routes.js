@@ -2,10 +2,12 @@ const express = require("express");
 
 const {
   register,
+  login,
 } = require("../controllers/user.controller");
 
 const {
   registerUserSchema,
+  loginUserSchema,
 } = require("../schemas/user.schema");
 
 const {
@@ -18,6 +20,12 @@ router.post(
   "/register",
   validateBody(registerUserSchema),
   register
+);
+
+router.post(
+  "/login",
+  validateBody(loginUserSchema),
+  login
 );
 
 module.exports = router;
