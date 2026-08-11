@@ -1,21 +1,16 @@
 const express = require("express");
 
+const healthRoutes = require("./routes/health.routes");
+const {
+  notFound,
+} = require("./middlewares/not-found.middleware");
+
 const app = express();
 
 app.use(express.json());
 
-app.get("/health", (_req, res) => {
-  res.status(200).json({
-    ok: true,
-    message: "API Gestor de Tareas funcionando correctamente",
-  });
-});
+app.use("/health", healthRoutes);
 
-app.use((_req, res) => {
-  res.status(404).json({
-    ok: false,
-    message: "Ruta no encontrada",
-  });
-});
+app.use(notFound);
 
 module.exports = app;
