@@ -1,0 +1,604 @@
+{
+  "info": {
+    "_postman_id": "68e6c00a-31a3-4745-8458-a0c4c3774edb",
+    "name": "TP Integrador - API Gestor de Tareas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32818487"
+  },
+  "item": [
+    {
+      "name": "00 - Verificar API ",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "01 - Registrar usuario",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Usuario Demo\",\r\n  \"email\": \"demo@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - Validar registro",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"A\",\r\n  \"email\": \"correo-invalido\",\r\n  \"password\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - JSON mal formado",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Usuario Error\",\r\n  \"email\": \"error@ejemplo.com\"\r\n  \"password\": \"ClaveSegura123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - Iniciar sesión",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "if (pm.response.code === 200 && response.data?.token) {\r",
+              "  pm.collectionVariables.set(\r",
+              "    \"token\",\r",
+              "    response.data.token\r",
+              "  );\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"demo@ejemplo.com\",\r\n  \"password\": \"ClaveSegura123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - Login incorrecto",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"demo@ejemplo.com\",\r\n  \"password\": \"ContraseñaIncorrecta123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06 - Listar tareas sin token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07 - Listar tareas con token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "08 - Crear tarea",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Tarea para eliminar\",\r\n  \"description\": \"Registro creado para probar DELETE\",\r\n  \"status\": \"pendiente\",\r\n  \"priority\": \"media\",\r\n  \"dueDate\": \"2026-08-30\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "09 - Buscar tareas case insensitive",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items?search=INFORME",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "INFORME"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10 - Validar creación de tarea",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"A\",\r\n  \"status\": \"terminada\",\r\n  \"priority\": \"urgente\",\r\n  \"dueDate\": \"20/08/2026\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11 - Actualizar tarea",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"description\": \"Informe en preparación y revisión\",\r\n  \"status\": \"en_progreso\",\r\n  \"priority\": \"media\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12 - Validar actualización vacía",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "13 - Actualizar tarea inexistente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"completada\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items/00000000-0000-4000-8000-000000000000",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "00000000-0000-4000-8000-000000000000"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "14 - Actualizar tarea sin token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"completada\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/items/8b1eb798-14d7-40aa-be09-7f15c67a1d3f",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "8b1eb798-14d7-40aa-be09-7f15c67a1d3f"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "15 - Eliminar tarea",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items/7321f275-c152-4fd6-930d-3a1690308943",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "7321f275-c152-4fd6-930d-3a1690308943"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "16 - Eliminar tarea inexistente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items/7321f275-c152-4fd6-930d-3a1690308943",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "7321f275-c152-4fd6-930d-3a1690308943"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "17 - Eliminar tarea sin token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/items/7321f275-c152-4fd6-930d-3a1690308943",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "items",
+            "7321f275-c152-4fd6-930d-3a1690308943"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "secret": true
+    }
+  ]
+}
